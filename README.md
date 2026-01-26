@@ -7,7 +7,7 @@ A simple SwiftUI demo for my Favor Delivery job application.
 
 Here are a few screenshots comparing my app to the Favor website:
 
-<img width="1632" height="974" alt="Screenshot 2026-01-26 at 2 38 13 AM" src="https://gist.github.com/user-attachments/assets/90a0073b-194f-4ead-a985-899b81d4cc7f" />
+<img width="1632" height="974" alt="Screenshot 2026-01-26 at 2 38 13 AM" src="./.media/Screenshot 2026-01-26 at 2.38.13 AM.png" />
 
 <img width="1635" height="977" alt="Screenshot 2026-01-26 at 2 38 45 AM" src="https://gist.github.com/user-attachments/assets/074a5ad9-fc78-41a5-ba3a-2a852f592d8e" />
 
