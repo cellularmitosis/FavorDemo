@@ -59,6 +59,7 @@ class FavorClient {
         {
             return
         }
+        if case .loading = browseFetchState { return }
 
         browseFetchState = .loading
         do {
@@ -102,6 +103,7 @@ class FavorClient {
         {
             return
         }
+        if case .loading = container.fetchState { return }
 
         container.fetchState = .loading
         do {
@@ -144,6 +146,7 @@ class FavorClient {
         {
             return
         }
+        if case .loading = container.fetchState { return }
 
         container.fetchState = .loading
         do {
@@ -184,19 +187,20 @@ fileprivate func _getGuestJWT(reqlog: RequestLog? = nil) async throws -> String 
     /*
      Note: we just need to grab a JWT out of the Set-Cookie header, but this is unfortunately
      complicated by Apple's API's.  A fresh fetch of favordelivery.com will return two Set-Cookie
-     header (one for the JWT and one for the session), but iOS exposes headers as a dictionary,
+     headers (one for the JWT and one for the session), but iOS exposes headers as a dictionary,
      which means only one entry per header name.
      However, if we use a fresh cookie storage object, Foundation will combine the two Set-Cookie
      headers into a single, comma-separated entry, allowing us to reliably access the JWT.
      */
     let url = URL(string: "https://www.favordelivery.com")!
     let request = URLRequest(url: url)
+    let cookieStorage = HTTPCookieStorage()
     let config = URLSessionConfiguration.default
     config.httpCookieAcceptPolicy = .always
-    let cookieStorage = HTTPCookieStorage()
     config.httpCookieStorage = cookieStorage
     config.requestCachePolicy = .reloadIgnoringLocalCacheData
     let session = URLSession(configuration: config)
+
     let (data, response) = try await httpAsData(request: request, session: session, reqlog: reqlog)
     guard let cookie = response.value(forHTTPHeaderField: "Set-Cookie") else {
         _log("_getGuestJWT(): error: no set-cookie")
