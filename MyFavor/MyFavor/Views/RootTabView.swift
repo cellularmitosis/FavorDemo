@@ -15,12 +15,7 @@ struct RootTabView: View {
             NavigationStack(path: $_categoriesNavStackPath) {
                 CategoriesView()
                     .navigationDestination(for: RootTabView.Route.self) { route in
-                        switch route {
-                        case .category(let category):
-                            CategoryView(categodyID: category.id, categoryName: category.name)
-                        case .menu(let merchant):
-                            MenuView(merchant: merchant)
-                        }
+                        _route(for: route)
                     }
             }
             .tabItem {
@@ -29,14 +24,9 @@ struct RootTabView: View {
 
             NavigationStack(path: $_sectionsNavStackPath) {
                 FeedView()
-                    .navigationDestination(for: RootTabView.Route.self, destination: { route in
-                        switch route {
-                        case .category(let category):
-                            CategoryView(categodyID: category.id, categoryName: category.name)
-                        case .menu(let merchant):
-                            MenuView(merchant: merchant)
-                        }
-                    })
+                    .navigationDestination(for: RootTabView.Route.self) { route in
+                        _route(for: route)
+                    }
             }
             .tabItem {
                 Label("Feed", systemImage: "list.clipboard")
@@ -45,12 +35,7 @@ struct RootTabView: View {
             NavigationStack(path: $_favoriteMerchantsNavStackPath) {
                 FavoriteMerchantsView()
                     .navigationDestination(for: RootTabView.Route.self) { route in
-                        switch route {
-                        case .category(let category):
-                            CategoryView(categodyID: category.id, categoryName: category.name)
-                        case .menu(let merchant):
-                            MenuView(merchant: merchant)
-                        }
+                        _route(for: route)
                     }
             }
             .tabItem {
@@ -71,8 +56,19 @@ struct RootTabView: View {
     }
 
     // MARK: Internals
-    
+
     @State private var _categoriesNavStackPath: [Route] = []
     @State private var _sectionsNavStackPath: [Route] = []
     @State private var _favoriteMerchantsNavStackPath: [Route] = []
+
+    private func _route(for route: RootTabView.Route) -> some View {
+        Group {
+            switch route {
+            case .category(let category):
+                CategoryView(categodyID: category.id, categoryName: category.name)
+            case .menu(let merchant):
+                MenuView(merchant: merchant)
+            }
+        }
+    }
 }

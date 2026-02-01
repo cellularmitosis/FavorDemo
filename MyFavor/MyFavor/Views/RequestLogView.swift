@@ -65,33 +65,6 @@ struct ReqLogCell: View {
             return "\(elapsed) 🐇"
         }
     }
-
-    private var _urlEmoji: String {
-        let key = "\(entry.request.httpMethod ?? "(nil)") \(entry.request.url?.absoluteString ?? "(nil)")"
-        return key.hashValue.asEmoji
-    }
-}
-
-
-// MARK: - RequestLogEntry
-
-struct RequestLogEntry: Identifiable {
-    let id = UUID()
-    let elapsed: TimeInterval
-    let request: URLRequest
-    let response: URLResponse
-}
-
-
-// MARK: - RequestLog
-
-@Observable
-class RequestLog {
-    private(set) var entries: [RequestLogEntry] = []
-
-    func append(_ entry: RequestLogEntry) {
-        entries.append(entry)
-    }
 }
 
 

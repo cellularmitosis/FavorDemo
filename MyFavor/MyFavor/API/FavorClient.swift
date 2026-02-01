@@ -28,24 +28,41 @@ class FavorClient {
     var baseURL: URL
     var jwt: String?
     var location: GeoLocation
+    var reqlog: RequestLog?
 
     static let ttl: TimeInterval = 5 * 60
 
     init(
         baseURL: URL = URL(string: "https://api.askfavor.com")!,
         jwt: String? = nil,
-        location: GeoLocation = .favorHQ
+        location: GeoLocation = .favorHQ,
+        reqlog: RequestLog? = nil
     ) {
         self.baseURL = baseURL
         self.jwt = jwt
         self.location = location
+        self.reqlog = reqlog
     }
 
-    enum FetchState<T> {
+    enum FetchState<T: Equatable>: Equatable {
         case empty
         case loading
         case succeeded(content: T, incept: Date)
         case failed(error: Error)
+
+        /// Note: this ignores the associated error when comparing two .failed cases.
+        static func == (lhs: FavorClient.FetchState<T>, rhs: FavorClient.FetchState<T>) -> Bool {
+            switch (lhs, rhs) {
+            case (.empty, .empty), (.loading, .loading):
+                return true
+            case (.succeeded(let a, let ad), .succeeded(let b, let bd)):
+                return a == b && ad == bd
+            case (.failed, .failed):
+                return true
+            default:
+                return false
+            }
+        }
     }
 
     // MARK: Browse (/page-layouts/v2/browse)
@@ -64,7 +81,7 @@ class FavorClient {
         browseFetchState = .loading
         do {
             let jwt = try await _ensureGuestJWT()
-            let (browse, _) = try await _getBrowse(baseURL: baseURL, jwt: jwt, location: location, reqlog: g_reqlog)
+            let (browse, _) = try await _getBrowse(baseURL: baseURL, jwt: jwt, location: location, reqlog: reqlog)
             browseFetchState = .succeeded(content: browse, incept: Date())
         } catch {
             _log("> fetchBrowseIfNeeded: -> .failed: \(error)")
@@ -108,7 +125,7 @@ class FavorClient {
         container.fetchState = .loading
         do {
             let jwt = try await _ensureGuestJWT()
-            let (category, _) = try await _getCategory(baseURL: baseURL, jwt: jwt, location: location, id: id, reqlog: g_reqlog)
+            let (category, _) = try await _getCategory(baseURL: baseURL, jwt: jwt, location: location, id: id, reqlog: reqlog)
             container.fetchState = .succeeded(content: category, incept: Date())
         } catch {
             _log("> fetchCategoryIfNeeded: -> .failed: \(error)")
@@ -151,8 +168,8 @@ class FavorClient {
         container.fetchState = .loading
         do {
             let jwt = try await _ensureGuestJWT()
-            let (menuUrlJson, _) = try await _getMenuURL(baseURL: baseURL, jwt: jwt, id: id, reqlog: g_reqlog)
-            let (menu, _) = try await _getMenuOverview(baseURL: baseURL, jwt: jwt, subpath: menuUrlJson.menu_url, reqlog: g_reqlog)
+            let (menuUrlJson, _) = try await _getMenuURL(baseURL: baseURL, jwt: jwt, id: id, reqlog: reqlog)
+            let (menu, _) = try await _getMenuOverview(baseURL: baseURL, jwt: jwt, subpath: menuUrlJson.menu_url, reqlog: reqlog)
             container.fetchState = .succeeded(content: menu, incept: Date())
         } catch {
             _log("> menuFetchStateContainer: -> .failed: \(error)")
@@ -169,7 +186,7 @@ class FavorClient {
             return jwt
         } else {
             _log("> _ensureGuestJWT: _getGuestJWT(): start")
-            let jwt = try await _getGuestJWT(reqlog: g_reqlog)
+            let jwt = try await _getGuestJWT(reqlog: reqlog)
             self.jwt = jwt
             _log("> _ensureGuestJWT: _getGuestJWT(): returning jwt")
             return jwt
