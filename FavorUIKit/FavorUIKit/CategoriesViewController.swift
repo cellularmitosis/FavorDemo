@@ -179,7 +179,7 @@ class CategoryTableCell: UITableViewCell {
 }
 
 
-extension FavorClient.FetchState<BrowseJSON> {
+fileprivate extension FavorClient.FetchState<BrowseJSON> {
     var success: BrowseJSON? {
         if case .succeeded(let content, _) = self {
             return content

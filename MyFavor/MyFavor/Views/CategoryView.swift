@@ -14,6 +14,9 @@ struct CategoryView: View {
     let categodyID: String
     let categoryName: String
 
+    // Use this closure when this View is used within a UIKit context
+    var didSelectMerchant: ((BrowseJSON.MerchantCarouselSectionJSON.MerchantJSON) -> Void)? = nil
+
     var body: some View {
         let container = _client.categoryFetchStateContainer(forCategoryID: categodyID)
         Group {
@@ -52,8 +55,18 @@ struct CategoryView: View {
     private func _makeSucceededView(category: CategoryJSON) -> some View {
         List {
             ForEach(category.merchants) { merchant in
-                NavigationLink(value: RootTabView.Route.menu(merchant)) {
-                    MerchantCell(merchant: merchant)
+                if let didSelectMerchant {
+                    // for use within a UINavigationController context:
+                    Button {
+                        didSelectMerchant(merchant)
+                    } label: {
+                        MerchantCell(merchant: merchant)
+                    }
+                } else {
+                    // for use within a SwiftUI context:
+                    NavigationLink(value: RootTabView.Route.menu(merchant)) {
+                        MerchantCell(merchant: merchant)
+                    }
                 }
             }
         }

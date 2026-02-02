@@ -10,11 +10,23 @@ import SwiftUI
 
 /// The "favorites" tab.
 struct FavoriteMerchantsView: View {
+
+    // Use this closure when this View is used within a UIKit context
+    var didSelectMerchant: ((BrowseJSON.MerchantCarouselSectionJSON.MerchantJSON) -> Void)? = nil
+
     var body: some View {
         List {
             ForEach(_favoritesStore.merchants) { merchant in
-                NavigationLink(value: RootTabView.Route.menu(merchant)) {
-                    MerchantCell(merchant: merchant)
+                if let didSelectMerchant {
+                    Button {
+                        didSelectMerchant(merchant)
+                    } label: {
+                        MerchantCell(merchant: merchant)
+                    }
+                } else {
+                    NavigationLink(value: RootTabView.Route.menu(merchant)) {
+                        MerchantCell(merchant: merchant)
+                    }
                 }
             }
         }

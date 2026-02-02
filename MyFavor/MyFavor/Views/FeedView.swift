@@ -10,6 +10,10 @@ import SwiftUI
 
 /// The "feed" tab.
 struct FeedView: View {
+
+    // Use this closure when this View is used within a UIKit context
+    var didSelectMerchant: ((BrowseJSON.MerchantCarouselSectionJSON.MerchantJSON) -> Void)? = nil
+
     var body: some View {
         Group {
             switch _client.browseFetchState {
@@ -52,8 +56,18 @@ struct FeedView: View {
                 // e.g. "For you", "Featured on Favor"
                 Section {
                     ForEach(section.merchants) { merchant in
-                        NavigationLink(value: RootTabView.Route.menu(merchant)) {
-                            MerchantCell(merchant: merchant)
+                        if let didSelectMerchant {
+                            // for use within a UINavigationController context:
+                            Button {
+                                didSelectMerchant(merchant)
+                            } label: {
+                                MerchantCell(merchant: merchant)
+                            }
+                        } else {
+                            // for use within a NavigationStack context:
+                            NavigationLink(value: RootTabView.Route.menu(merchant)) {
+                                MerchantCell(merchant: merchant)
+                            }
                         }
                     }
                 } header: {
