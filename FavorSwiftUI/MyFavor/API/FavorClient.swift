@@ -12,6 +12,8 @@ import Observation
 fileprivate let _log: (String) -> Void = { print($0) }
 
 
+// MARK: - GeoLocation
+
 struct GeoLocation: Codable, Equatable {
     let latitude: Double
     let longitude: Double
@@ -21,6 +23,8 @@ struct GeoLocation: Codable, Equatable {
     static let momAndDadsHouse = GeoLocation(latitude: 33.22473069, longitude: -96.71386319)
 }
 
+
+// MARK: - FavorClient
 
 /// A caching, request-deduping Favor API client.
 @Observable
@@ -84,7 +88,7 @@ class FavorClient {
             let (browse, _) = try await _getBrowse(baseURL: baseURL, jwt: jwt, location: location, reqlog: reqlog)
             browseFetchState = .succeeded(content: browse, incept: Date())
         } catch {
-            _log("> fetchBrowseIfNeeded: -> .failed: \(error)")
+            print("> fetchBrowseIfNeeded: -> .failed: \(error)")
             browseFetchState = .failed(error: error)
         }
     }
@@ -128,7 +132,7 @@ class FavorClient {
             let (category, _) = try await _getCategory(baseURL: baseURL, jwt: jwt, location: location, id: id, reqlog: reqlog)
             container.fetchState = .succeeded(content: category, incept: Date())
         } catch {
-            _log("> fetchCategoryIfNeeded: -> .failed: \(error)")
+            print("> fetchCategoryIfNeeded: -> .failed: \(error)")
             container.fetchState = .failed(error: error)
         }
     }
@@ -172,7 +176,7 @@ class FavorClient {
             let (menu, _) = try await _getMenuOverview(baseURL: baseURL, jwt: jwt, subpath: menuUrlJson.menu_url, reqlog: reqlog)
             container.fetchState = .succeeded(content: menu, incept: Date())
         } catch {
-            _log("> menuFetchStateContainer: -> .failed: \(error)")
+            print("> menuFetchStateContainer: -> .failed: \(error)")
             container.fetchState = .failed(error: error)
         }
     }
@@ -196,7 +200,6 @@ class FavorClient {
 
 
 // MARK: - Stateless low-level HTTP functions
-
 
 /// Extract the guest JWT from the response headers of www.favordelivery.com.
 nonisolated

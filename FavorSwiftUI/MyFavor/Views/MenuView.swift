@@ -8,6 +8,8 @@
 import SwiftUI
 
 
+// MARK: - MenuView
+
 /// Displays the menu details of a restaurant.
 struct MenuView: View {
     let merchant: BrowseJSON.MerchantCarouselSectionJSON.MerchantJSON
@@ -112,6 +114,8 @@ struct MenuView: View {
     }
 }
 
+
+// MARK: - MenuItemCell
 
 struct MenuItemCell: View {
     let menuItem: MenuOverviewJSON.MenuItemJSON

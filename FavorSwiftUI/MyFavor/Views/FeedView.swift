@@ -7,6 +7,9 @@
 
 import SwiftUI
 
+//fileprivate let _log: (String) -> Void = { }
+fileprivate let _log: (String) -> Void = { print($0) }
+
 
 /// The "feed" tab.
 struct FeedView: View {
@@ -23,7 +26,7 @@ struct FeedView: View {
             case .loading:
                 ProgressView()
                     .onAppear() {
-                        print("SectionsView: .loading")
+                        _log("SectionsView: .loading")
                     }
 
             case .succeeded(let content, _):
@@ -43,7 +46,7 @@ struct FeedView: View {
     private func _makeEmptyView() -> some View {
         Color.clear
             .onAppear() {
-                print("SectionsView: .empty")
+                _log("SectionsView: .empty")
                 Task {
                     await _client.fetchBrowseIfNeeded()
                 }

@@ -9,6 +9,8 @@ import SwiftUI
 import Kingfisher
 
 
+// MARK: - CategoryView
+
 /// Displays the restaurants in a particular "category" (e.g. "pizza").
 struct CategoryView: View {
     let categodyID: String
@@ -88,6 +90,8 @@ struct CategoryView: View {
     }
 }
 
+
+// MARK: - MerchantCell
 
 /// A cell representing a restaurant.
 struct MerchantCell: View {

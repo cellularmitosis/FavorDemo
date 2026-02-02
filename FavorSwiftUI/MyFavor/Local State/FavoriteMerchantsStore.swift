@@ -8,6 +8,9 @@
 import Foundation
 import Observation
 
+//fileprivate let _log: (String) -> Void = { }
+fileprivate let _log: (String) -> Void = { print($0) }
+
 
 /// Disk-backed storage for a list of favorite restaurants.
 @Observable
@@ -20,7 +23,7 @@ class FavoriteMerchantsStore {
     }
 
     func add(merchant: BrowseJSON.MerchantCarouselSectionJSON.MerchantJSON) {
-        print("add \(merchant.name)")
+        _log("> FavoriteMerchantsStore: add \(merchant.name)")
         if merchants.contains(where: { $0.id == merchant.id }) {
             return
         }
@@ -34,7 +37,7 @@ class FavoriteMerchantsStore {
     }
 
     func remove(merchant: BrowseJSON.MerchantCarouselSectionJSON.MerchantJSON) {
-        print("remove \(merchant.name)")
+        _log("> FavoriteMerchantsStore: remove \(merchant.name)")
         var newMerchants = merchants
         newMerchants.removeAll { $0.id == merchant.id }
         Self._store(favorites: newMerchants)

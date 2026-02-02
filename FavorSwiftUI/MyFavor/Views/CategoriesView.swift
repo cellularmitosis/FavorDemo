@@ -8,6 +8,11 @@
 import SwiftUI
 import Kingfisher
 
+//fileprivate let _log: (String) -> Void = { }
+fileprivate let _log: (String) -> Void = { print($0) }
+
+
+// MARK: - CategoriesView
 
 /// Displays a list of "categories" (e.g. "pizza", "burgers", etc).
 struct CategoriesView: View {
@@ -20,7 +25,7 @@ struct CategoriesView: View {
 
             case .loading:
                 ProgressView()
-                    .onAppear { print("BrowseView: .loading") }
+                    .onAppear { _log("BrowseView: .loading") }
 
             case .succeeded(let browse, _):
                 let categories = _filtered(categories: browse.categories, using: _searchQuery)
@@ -52,7 +57,7 @@ struct CategoriesView: View {
     private func _makeEmptyView() -> some View {
         Color.clear
             .onAppear {
-                print("BrowseView: .empty")
+                _log("BrowseView: .empty")
                 Task {
                     await _client.fetchBrowseIfNeeded()
                 }
@@ -69,7 +74,7 @@ struct CategoriesView: View {
             }
         }
         .searchable(text: $_searchQuery, prompt: "Search")
-        .onAppear { print("BrowseView: .success") }
+        .onAppear { _log("BrowseView: .success") }
     }
 
     @ViewBuilder
@@ -85,10 +90,12 @@ struct CategoriesView: View {
                 }
             }
         }
-        .onAppear { print("BrowseView: .failed") }
+        .onAppear { _log("BrowseView: .failed") }
     }
 }
 
+
+// MARK: - CategoryCell
 
 /// A cell representing a category (e.g. "pizza").
 struct CategoryCell: View {
