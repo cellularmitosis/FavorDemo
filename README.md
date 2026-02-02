@@ -2,6 +2,9 @@
 
 A simple SwiftUI demo for my Favor Delivery job application.
 
+- FavorSwiftUI (a.k.a. "MyFavor") is a fully-SwiftUI demo application 
+- FavorUIKit is a UIKit AppDelegate + UITabController with hosted SwiftUI Views 
+
 
 ## Screenshots
 
