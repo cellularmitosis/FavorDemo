@@ -1,14 +1,21 @@
 # Favor demo app
 
-A simple SwiftUI demo for my Favor Delivery job application.
+A set of demos for my job application with Favor Delivery:
 
-- FavorSwiftUI (a.k.a. "MyFavor") is a fully-SwiftUI demo application 
-- FavorUIKit is a UIKit AppDelegate + UITabController with hosted SwiftUI Views 
+- FavorSwiftUI (a.k.a. "MyFavor") is a fully-SwiftUI demo application
+- FavorUIKit is a hybrid of UIKit and SwiftUI, representing a UIKit-to-SwiftUI migration
+  - This is an AppDelegate + UITabController with hosted SwiftUI Views from MyFavor
+
+Compare the "site maps" of the two demos:
+
+<img src="./.media/Screenshot 2026-02-01 at 10.14.34 PM.png" />
+
+<img src="./.media/Screenshot 2026-02-01 at 10.14.47 PM.png" />
 
 
-## Screenshots
+## Screenshots (MyFavor)
 
-Here are a few screenshots comparing my app to the Favor website:
+Here are a few screenshots comparing the MyFavor app to the Favor website:
 
 <img width="1632" height="974" alt="Screenshot 2026-01-26 at 2 38 13 AM" src="./.media/Screenshot 2026-01-26 at 2.38.13 AM.png" />
 

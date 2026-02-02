@@ -10,7 +10,6 @@ import SwiftUI
 
 /// Displays the menu details of a restaurant.
 struct MenuView: View {
-//    let merchant: CategoryJSON.MerchantJSON
     let merchant: BrowseJSON.MerchantCarouselSectionJSON.MerchantJSON
 
     var body: some View {

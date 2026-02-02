@@ -51,7 +51,6 @@ struct RootTabView: View {
 
     enum Route: Hashable {
         case category(BrowseJSON.CategoryJSON)
-//        case menu(CategoryJSON.MerchantJSON)
         case menu(BrowseJSON.MerchantCarouselSectionJSON.MerchantJSON)
     }
 

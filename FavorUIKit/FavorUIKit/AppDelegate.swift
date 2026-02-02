@@ -83,14 +83,6 @@ import SwiftUI
 
 extension AppDelegate: CategoriesViewControllerDelegate {
 
-    private func _didSelect(merchant: BrowseJSON.MerchantCarouselSectionJSON.MerchantJSON, fromNav: UINavigationController) {
-        let menuView = MenuView(merchant: merchant)
-            .environment(self.client)
-            .environment(self.favoritesStore)
-        let merchantVC = UIHostingController(rootView: menuView)
-        fromNav.pushViewController(merchantVC, animated: true)
-    }
-
     func didSelect(category: BrowseJSON.CategoryJSON, from fromVC: CategoriesViewController) {
         guard let navC = fromVC.navigationController else { return }
 
@@ -105,5 +97,13 @@ extension AppDelegate: CategoriesViewControllerDelegate {
 
         let categoryVC = UIHostingController(rootView: categoryView)
         fromVC.navigationController?.pushViewController(categoryVC, animated: true)
+    }
+
+    private func _didSelect(merchant: BrowseJSON.MerchantCarouselSectionJSON.MerchantJSON, fromNav: UINavigationController) {
+        let menuView = MenuView(merchant: merchant)
+            .environment(self.client)
+            .environment(self.favoritesStore)
+        let merchantVC = UIHostingController(rootView: menuView)
+        fromNav.pushViewController(merchantVC, animated: true)
     }
 }

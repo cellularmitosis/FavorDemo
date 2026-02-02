@@ -359,6 +359,8 @@ struct CategoryJSON: Decodable, Equatable {
         let total: Int
     }
 
+    // This appears to be identical to BrowseJSON.MerchantCarouselSectionJSON.MerchantJSON,
+    // so I will use that instead.
 //    struct MerchantJSON: Decodable, Equatable, Identifiable, Hashable {
 //        let id: Int
 //        let franchise_id: Int
